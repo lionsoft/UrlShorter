@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { map, flatMap, debounceTime, retryWhen, filter } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class HomePage {
     /** Full URL resolved from shorten one */
     fullUrl: string;
 
-
+    @ViewChild('shortenUrl', {static: true}) shortenUrlInput: ElementRef<any>;
     @ViewChild('editDialog', {static: true}) editDialogTmpl: TemplateRef<any>;
     @ViewChild('deleteDialog', {static: true}) deleteDialogTmpl: TemplateRef<any>;
 
@@ -78,6 +78,9 @@ export class HomePage {
             const result = await this.apiService.make(url);
             this.form.controls.shortenUrl.setValue(result);
             this.form.controls.url.setValue('');
+            this.shortenUrlInput.nativeElement.select();
+            document.execCommand("copy");
+            this.snackBar.open('The shorten URL has been created and copied to clipboard.', 'OK');
             return result;
         } catch (e) {
             this.snackBar.open(this.extractError(e), 'OK');
