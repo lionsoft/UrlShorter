@@ -1,0 +1,9 @@
+{
+  "name": "url-shorter",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd app&ng serve",
+    "build": "cd app&ng build"
+  },
+  "private": true
+}
